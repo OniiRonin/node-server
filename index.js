@@ -17,69 +17,70 @@ function mostrarMenu() {
     console.log('========================');
 }
 
-function procesarOpcionMenu(opcion) {
-    switch (opcion) {
-        case '1':
-            agregarTarea();
-            break;
-        case '2':
-            completarTarea();
-            break;
-        case '3':
-            eliminarTarea();
-            break;
-        case '4':
-            console.log('Saliendo del Gestor de Tareas...');
-            rl.close();
-            break;
-        default:
-            console.log('Opción inválida. Por favor, inténtalo nuevamente.');
-            mostrarMenu();
-            break;
-    }
-}
-
 function agregarTarea() {
-    rl.question('Ingresa el nombre de la tarea: ', (nombre) => {
-        gestorTareas.agregarTarea(nombre);
-        console.log('¡Tarea agregada exitosamente!');
-        mostrarMenu();
-        rl.question('Ingresa tu opción: ', (opcion) => {
-            procesarOpcionMenu(opcion);
+    return new Promise((resolve) => {
+        rl.question('Ingresa el nombre de la tarea: ', (nombre) => {
+            gestorTareas.agregarTarea(nombre);
+            console.log('¡Tarea agregada exitosamente!');
+            resolve();
         });
     });
 }
 
 function completarTarea() {
-    console.log('Tareas:');
-    gestorTareas.mostrarTareas();
-    rl.question('Ingresa el índice de la tarea a completar: ', (indice) => {
-        gestorTareas.completarTarea(indice);
-        console.log('¡Tarea completada exitosamente!');
-        mostrarMenu();
-        rl.question('Ingresa tu opción: ', (opcion) => {
-            procesarOpcionMenu(opcion);
+    return new Promise((resolve) => {
+        console.log('Tareas:');
+        gestorTareas.mostrarTareas();
+        rl.question('Ingresa el índice de la tarea a completar: ', (indice) => {
+            gestorTareas.completarTarea(indice);
+            console.log('¡Tarea completada exitosamente!');
+            resolve();
         });
     });
 }
 
 function eliminarTarea() {
-    console.log('Tareas:');
-    gestorTareas.mostrarTareas();
-    rl.question('Ingresa el índice de la tarea a eliminar: ', (indice) => {
-        gestorTareas.eliminarTarea(indice);
-        console.log('¡Tarea eliminada exitosamente!');
-        mostrarMenu();
-        rl.question('Ingresa tu opción: ', (opcion) => {
-            procesarOpcionMenu(opcion);
+    return new Promise((resolve) => {
+        console.log('Tareas:');
+        gestorTareas.mostrarTareas();
+        rl.question('Ingresa el índice de la tarea a eliminar: ', (indice) => {
+            gestorTareas.eliminarTarea(indice);
+            console.log('¡Tarea eliminada exitosamente!');
+            resolve();
         });
     });
 }
 
-function iniciarAplicacion() {
+async function iniciarAplicacion() {
     mostrarMenu();
-    rl.question('Ingresa tu opción: ', (opcion) => {
-        procesarOpcionMenu(opcion);
+    let opcion = await pregunta('Ingresa tu opción: ');
+    while (opcion !== '4') {
+        switch (opcion) {
+            case '1':
+                await agregarTarea();
+                break;
+            case '2':
+                await completarTarea();
+                break;
+            case '3':
+                await eliminarTarea();
+                break;
+            default:
+                console.log('Opción inválida. Por favor, inténtalo nuevamente.');
+                break;
+        }
+        mostrarMenu();
+        opcion = await pregunta('Ingresa tu opción: ');
+    }
+    console.log('Saliendo del Gestor de Tareas...');
+    rl.close();
+}
+
+function pregunta(pregunta) {
+    return new Promise((resolve) => {
+        rl.question(pregunta, (respuesta) => {
+            resolve(respuesta);
+        });
     });
 }
 
