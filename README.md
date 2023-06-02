@@ -26,4 +26,4 @@ Las principales diferencias entre `async/await` y el método `then()` son:
 
 - **Encadenamiento de promesas:** `async/await` permite encadenar promesas de manera más sencilla y legible, ya que podemos utilizar la palabra clave `await` para esperar a que una promesa se resuelva antes de continuar. En cambio, con el método `then()`, necesitamos encadenar las llamadas a `then()` para manejar cada promesa sucesiva.
 
-En general, `async/await` suele ser más recomendado cuando se trabaja con código asincrónico en JavaScript, ya que proporciona una sintaxis más clara y una forma más fácil de manejar errores. Sin
+En general, `async/await` suele ser más recomendado cuando se trabaja con código asincrónico en JavaScript, ya que proporciona una sintaxis más clara y una forma más fácil de manejar errores. Sin embargo, el método then() sigue siendo útil en situaciones donde se requiere un mayor control y flexibilidad en el manejo de las promesas.
